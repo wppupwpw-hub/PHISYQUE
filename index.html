@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دروس الفيزياء المتحركة</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans Arabic', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            direction: rtl;
+            text-align: right;
+            min-height: 100vh;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        .animation-scene {
+            background: linear-gradient(to bottom, #87ceeb 0%, #98fb98 100%);
+            border-radius: 15px;
+            border: 2px solid #e2e8f0;
+            position: relative;
+            overflow: hidden;
+        }
+        .ground {
+            background: linear-gradient(to bottom, #8b7355, #6b5b47);
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 40px;
+            border-radius: 0 0 13px 13px;
+        }
+        .grass {
+            background: #4ade80;
+            position: absolute;
+            bottom: 35px;
+            width: 100%;
+            height: 8px;
+        }
+        .car {
+            width: 60px;
+            height: 30px;
+            position: absolute;
+            transition: none;
+        }
+        .cannon {
+            width: 40px;
+            height: 20px;
+            position: absolute;
+            bottom: 40px;
+            right: 50px;
+            transform-origin: right center;
+        }
+        .projectile-trail {
+            stroke: #ff6b6b;
+            stroke-width: 2;
+            fill: none;
+            stroke-dasharray: 5,5;
+        }
+        .speed-indicator {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            background: rgba(255,255,255,0.9);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            z-index: 10;
+        }
+        .equation-box {
+            background: linear-gradient(135deg, #fef3c7, #fbbf24);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            border-right: 4px solid #f59e0b;
+        }
+        .control-panel {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin: 5px;
+            font-size: 14px;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        .btn-primary { background: #3b82f6; color: white; }
+        .btn-primary:hover { background: #2563eb; }
+        .btn-success { background: #10b981; color: white; }
+        .btn-success:hover { background: #059669; }
+        .btn-danger { background: #ef4444; color: white; }
+        .btn-danger:hover { background: #dc2626; }
+        .btn-purple { background: #8b5cf6; color: white; }
+        .btn-purple:hover { background: #7c3aed; }
+        .stats {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            font-size: 14px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .falling-apple {
+            width: 20px;
+            height: 20px;
+            position: absolute;
+            font-size: 16px;
+        }
+        .tree {
+            position: absolute;
+            right: 30%;
+            bottom: 40px;
+        }
+        .wheel {
+            animation: spin 0.5s linear infinite;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .paused .wheel, .paused {
+            animation-play-state: paused !important;
+        }
+        .physics-formula {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid #3b82f6;
+            border-radius: 8px;
+            padding: 10px;
+            margin: 5px 0;
+            font-family: monospace;
+            text-align: center;
+        }
+        .projectile-ball {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: radial-gradient(circle, #ff6b6b, #e55555);
+            border-radius: 50%;
+            font-size: 10px;
+            display: none;
+            z-index: 5;
+        }
+    </style>
+</head>
+<body class="p-6">
+    <div class="max-w-7xl mx-auto">
+        <header class="text-center mb-12">
+            <h1 class="text-5xl font-bold text-white mb-4 drop-shadow-lg">🎯 دروس الفيزياء التفاعلية</h1>
+            <p class="text-xl text-white opacity-90 drop-shadow">تعلم قوانين الحركة من خلال المحاكاة البصرية الواقعية</p>
+        </header>
+
+        <main class="grid lg:grid-cols-2 gap-8">
+            <!-- الحركة المنتظمة - عربة متحركة -->
+            <div class="card p-8">
+                <div class="flex items-center mb-6">
+                    <div class="bg-blue-500 text-white p-4 rounded-full ml-4">
+                        🚗
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-800">الحركة المنتظمة</h2>
+                </div>
+                
+                <div class="animation-scene h-48 mb-4" id="uniform-scene">
+                    <div class="speed-indicator" id="uniform-speed">السرعة: 50 كم/س</div>
+                    <!-- الطريق -->
+                    <div style="position: absolute; bottom: 40px; width: 100%; height: 4px; background: repeating-linear-gradient(to left, #fff 0px, #fff 20px, transparent 20px, transparent 40px);"></div>
+                    <!-- العربة -->
+                    <svg class="car" id="uniform-car" style="bottom: 44px; right: 20px;">
+                        <rect x="10" y="15" width="40" height="12" fill="#e74c3c" rx="2"/>
+                        <rect x="5" y="10" width="50" height="8" fill="#3498db" rx="4"/>
+                        <rect x="15" y="6" width="15" height="6" fill="#85c1e9" rx="1"/>
+                        <rect x="35" y="6" width="10" height="6" fill="#85c1e9" rx="1"/>
+                        <circle cx="18" cy="27" r="4" fill="#34495e" class="wheel"/>
+                        <circle cx="42" cy="27" r="4" fill="#34495e" class="wheel"/>
+                        <circle cx="18" cy="27" r="2" fill="#95a5a6"/>
+                        <circle cx="42" cy="27" r="2" fill="#95a5a6"/>
+                    </svg>
+                    <div class="ground"></div>
+                    <div class="grass"></div>
+                </div>
+                
+                <div class="equation-box">
+                    <div class="text-lg font-bold text-gray-800 mb-3">📐 قوانين الحركة المنتظمة</div>
+                    <div class="physics-formula">المسافة = السرعة × الزمن</div>
+                    <div class="physics-formula">d = v × t</div>
+                    <div class="physics-formula">السرعة = المسافة ÷ الزمن</div>
+                </div>
+                
+                <div class="control-panel">
+                    <button class="btn btn-primary" onclick="startUniformMotion()">🚀 تشغيل</button>
+                    <button class="btn btn-primary" onclick="pauseUniformMotion()">⏸ إيقاف مؤقت</button>
+                    <button class="btn btn-primary" onclick="resetUniformMotion()">🔄 إعادة تعيين</button>
+                    <br><br>
+                    <label>السرعة: <input type="range" id="uniform-speed-slider" min="1" max="10" value="5" onchange="updateUniformSpeed()"> <span id="uniform-speed-value">50 كم/س</span></label>
+                </div>
+                
+                <div class="stats" id="uniform-stats">
+                    <div>السرعة: <span id="uniform-velocity">50</span> كم/س</div>
+                    <div>المسافة: <span id="uniform-distance">0</span> م</div>
+                    <div>الزمن: <span id="uniform-time">0</span> ث</div>
+                    <div>السرعة المتوسطة: <span id="uniform-avg-speed">0</span> كم/س</div>
+                </div>
+            </div>
+
+            <!-- الحركة المتسارعة -->
+            <div class="card p-8">
+                <div class="flex items-center mb-6">
+                    <div class="bg-green-500 text-white p-4 rounded-full ml-4">
+                        🏎️
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-800">الحركة المتسارعة</h2>
+                </div>
+                
+                <div class="animation-scene h-48 mb-4" id="accelerated-scene">
+                    <div class="speed-indicator" id="accelerated-speed">السرعة: 0 كم/س</div>
+                    <!-- مضمار السباق -->
+                    <div style="position: absolute; bottom: 40px; width: 100%; height: 4px; background: repeating-linear-gradient(to left, #f1c40f 0px, #f1c40f 15px, #e74c3c 15px, #e74c3c 30px);"></div>
+                    <!-- سيارة رياضية -->
+                    <svg class="car" id="accelerated-car" style="bottom: 44px; right: 20px;">
+                        <rect x="8" y="12" width="44" height="15" fill="#e74c3c" rx="3"/>
+                        <rect x="5" y="8" width="50" height="10" fill="#f39c12" rx="5"/>
+                        <rect x="12" y="4" width="12" height="6" fill="#3498db" rx="1"/>
+                        <rect x="36" y="4" width="12" height="6" fill="#3498db" rx="1"/>
+                        <polygon points="8,18 15,8 45,8 52,18" fill="#e67e22"/>
+                        <circle cx="16" cy="27" r="5" fill="#2c3e50" class="wheel"/>
+                        <circle cx="44" cy="27" r="5" fill="#2c3e50" class="wheel"/>
+                        <circle cx="16" cy="27" r="3" fill="#e74c3c"/>
+                        <circle cx="44" cy="27" r="3" fill="#e74c3c"/>
+                        <!-- خطوط السرعة -->
+                        <g id="speed-lines" style="opacity: 0;">
+                            <line x1="0" y1="15" x2="8" y2="15" stroke="#f39c12" stroke-width="2"/>
+                            <line x1="2" y1="10" x2="8" y2="10" stroke="#f39c12" stroke-width="1"/>
+                            <line x1="4" y1="20" x2="8" y2="20" stroke="#f39c12" stroke-width="1"/>
+                        </g>
+                    </svg>
+                    <div class="ground"></div>
+                    <div class="grass"></div>
+                </div>
+                
+                <div class="equation-box">
+                    <div class="text-lg font-bold text-gray-800 mb-3">🚀 قوانين الحركة المتسارعة</div>
+                    <div class="physics-formula">السرعة النهائية = السرعة الابتدائية + التسارع × الزمن</div>
+                    <div class="physics-formula">v = v₀ + at</div>
+                    <div class="physics-formula">المسافة = v₀t + ½at²</div>
+                </div>
+                
+                <div class="control-panel">
+                    <button class="btn btn-success" onclick="startAcceleratedMotion()">🏁 انطلاق</button>
+                    <button class="btn btn-success" onclick="pauseAcceleratedMotion()">⏸ إيقاف</button>
+                    <button class="btn btn-success" onclick="resetAcceleratedMotion()">🔄 إعادة تعيين</button>
+                    <br><br>
+                    <label>التسارع: <input type="range" id="acceleration-slider" min="1" max="5" value="2" onchange="updateAcceleration()"> <span id="acceleration-value">2 م/ث²</span></label>
+                </div>
+                
+                <div class="stats">
+                    <div>التسارع: <span id="accelerated-acceleration">2</span> م/ث²</div>
+                    <div>السرعة: <span id="accelerated-velocity">0</span> كم/س</div>
+                    <div>المسافة: <span id="accelerated-distance">0</span> م</div>
+                    <div>الزمن: <span id="accelerated-time">0</span> ث</div>
+                </div>
+            </div>
+
+            <!-- السقوط الحر - التفاحة تسقط من الشجرة -->
+            <div class="card p-8">
+                <div class="flex items-center mb-6">
+                    <div class="bg-red-500 text-white p-4 rounded-full ml-4">
+                        🍎
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-800">السقوط الحر</h2>
+                </div>
+                
+                <div class="animation-scene h-56 mb-4" id="freefall-scene">
+                    <div class="speed-indicator" id="freefall-speed">السرعة: 0 م/ث</div>
+                    <!-- الشجرة -->
+                    <svg class="tree" width="80" height="150">
+                        <!-- جذع الشجرة -->
+                        <rect x="30" y="100" width="20" height="50" fill="#8b4513"/>
+                        <!-- أوراق الشجرة -->
+                        <circle cx="40" cy="85" r="30" fill="#228b22"/>
+                        <circle cx="25" cy="70" r="25" fill="#32cd32"/>
+                        <circle cx="55" cy="70" r="25" fill="#32cd32"/>
+                        <circle cx="40" cy="55" r="20" fill="#90ee90"/>
+                        <!-- التفاحات على الشجرة -->
+                        <circle cx="20" cy="75" r="4" fill="#dc143c"/>
+                        <circle cx="60" cy="80" r="4" fill="#dc143c"/>
+                        <circle cx="35" cy="65" r="4" fill="#dc143c"/>
+                    </svg>
+                    
+                    <!-- التفاحة الساقطة -->
+                    <div class="falling-apple" id="falling-apple" style="right: 45%; top: 20px;">
+                        🍎
+                    </div>
+                    
+                    <!-- خطوط المسافة -->
+                    <div style="position: absolute; left: 20px; top: 20px; color: #2c3e50;">
+                        <div style="border-right: 2px dashed #3498db; height: 180px; position: relative;">
+                            <span style="position: absolute; right: 5px; top: 0;">0 م</span>
+                            <span style="position: absolute; right: 5px; top: 45px;">5 م</span>
+                            <span style="position: absolute; right: 5px; top: 90px;">10 م</span>
+                            <span style="position: absolute; right: 5px; bottom: 0;">20 م</span>
+                        </div>
+                    </div>
+                    
+                    <div class="ground"></div>
+                    <div class="grass"></div>
+                </div>
+                
+                <div class="equation-box">
+                    <div class="text-lg font-bold text-gray-800 mb-3">🌍 قوانين الجاذبية الأرضية</div>
+                    <div class="physics-formula">تسارع الجاذبية: g = 9.8 م/ث²</div>
+                    <div class="physics-formula">السرعة: v = gt</div>
+                    <div class="physics-formula">المسافة: h = ½gt²</div>
+                </div>
+                
+                <div class="control-panel">
+                    <button class="btn btn-danger" onclick="startFreeFall()">🍎 إسقاط التفاحة</button>
+                    <button class="btn btn-danger" onclick="pauseFreeFall()">⏸ إيقاف</button>
+                    <button class="btn btn-danger" onclick="resetFreeFall()">🔄 إعادة للشجرة</button>
+                </div>
+                
+                <div class="stats">
+                    <div>ارتفاع البداية: <span id="freefall-initial-height">20</span> م</div>
+                    <div>السرعة: <span id="freefall-velocity">0</span> م/ث</div>
+                    <div>المسافة المقطوعة: <span id="freefall-distance">0</span> م</div>
+                    <div>الزمن: <span id="freefall-time">0</span> ث</div>
+                </div>
+            </div>
+
+            <!-- حركة المقذوفات - المدفع -->
+            <div class="card p-8">
+                <div class="flex items-center mb-6">
+                    <div class="bg-purple-500 text-white p-4 rounded-full ml-4">
+                        💥
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-800">حركة المقذوفات</h2>
+                </div>
+                
+                <div class="animation-scene h-64 mb-4" id="projectile-scene">
+                    <div class="speed-indicator" id="projectile-speed">الزاوية: 45°</div>
+                    
+                    <!-- المدفع -->
+                    <svg class="cannon" id="cannon">
+                        <!-- قاعدة المدفع -->
+                        <rect x="0" y="10" width="30" height="10" fill="#2c3e50" rx="2"/>
+                        <!-- ماسورة المدفع -->
+                        <rect x="25" y="8" width="20" height="4" fill="#34495e" rx="2" id="cannon-barrel"/>
+                        <!-- العجلات -->
+                        <circle cx="8" cy="22" r="3" fill="#7f8c8d"/>
+                        <circle cx="22" cy="22" r="3" fill="#7f8c8d"/>
+                    </svg>
+                    
+                    <!-- مسار المقذوف -->
+                    <svg style="position: absolute; top: 0; right: 0; width: 100%; height: 100%; pointer-events: none;">
+                        <path id="projectile-path" class="projectile-trail" d=""/>
+                    </svg>
+                    
+                    <!-- القذيفة -->
+                    <div class="projectile-ball" id="projectile-ball" style="right: 70px; bottom: 50px;">💥</div>
+                    
+                    <!-- الهدف -->
+                    <div style="position: absolute; right: 20px; bottom: 40px;">
+                        <div style="width: 20px; height: 40px; background: linear-gradient(to top, #e74c3c, #c0392b); border-radius: 10px 10px 0 0;"></div>
+                        <div style="width: 30px; height: 20px; background: #f39c12; border-radius: 50%; margin-right: -5px; margin-top: -10px; text-align: center; line-height: 20px;">🎯</div>
+                    </div>
+                    
+                    <!-- شبكة إحداثيات -->
+                    <div style="position: absolute; top: 0; right: 0; width: 100%; height: 100%; opacity: 0.3; pointer-events: none;">
+                        <div style="position: absolute; width: 100%; height: 1px; background: #bdc3c7; top: 25%;"></div>
+                        <div style="position: absolute; width: 100%; height: 1px; background: #bdc3c7; top: 50%;"></div>
+                        <div style="position: absolute; width: 100%; height: 1px; background: #bdc3c7; top: 75%;"></div>
+                        <div style="position: absolute; width: 1px; height: 100%; background: #bdc3c7; right: 25%;"></div>
+                        <div style="position: absolute; width: 1px; height: 100%; background: #bdc3c7; right: 50%;"></div>
+                        <div style="position: absolute; width: 1px; height: 100%; background: #bdc3c7; right: 75%;"></div>
+                    </div>
+                    
+                    <div class="ground"></div>
+                    <div class="grass"></div>
+                </div>
+                
+                <div class="equation-box">
+                    <div class="text-lg font-bold text-gray-800 mb-3">🎯 قوانين المقذوفات</div>
+                    <div class="physics-formula">المدى الأفقي: R = v₀²sin(2θ)/g</div>
+                    <div class="physics-formula">أقصى ارتفاع: H = v₀²sin²(θ)/2g</div>
+                    <div class="physics-formula">زمن الطيران: T = 2v₀sin(θ)/g</div>
+                </div>
+                
+                <div class="control-panel">
+                    <label>زاوية الإطلاق: <input type="range" id="angle-slider" min="15" max="75" value="45" onchange="updateAngle()"> <span id="angle-value">45°</span></label>
+                    <br><br>
+                    <label>السرعة الابتدائية: <input type="range" id="velocity-slider" min="10" max="30" value="20" onchange="updateInitialVelocity()"> <span id="velocity-value">20 م/ث</span></label>
+                    <br><br>
+                    <button class="btn btn-purple" onclick="launchProjectile()">💥 إطلاق المدفع</button>
+                    <button class="btn btn-purple" onclick="pauseProjectile()">⏸ إيقاف</button>
+                    <button class="btn btn-purple" onclick="resetProjectile()">🔄 إعادة تحميل</button>
+                </div>
+                
+                <div class="stats">
+                    <div>زاوية الإطلاق: <span id="projectile-angle">45°</span></div>
+                    <div>السرعة الابتدائية: <span id="projectile-initial-velocity">20</span> م/ث</div>
+                    <div>الارتفاع الحالي: <span id="projectile-height">0</span> م</div>
+                    <div>المسافة الأفقية: <span id="projectile-range">0</span> م</div>
+                    <div>أقصى ارتفاع: <span id="projectile-max-height">0</span> م</div>
+                    <div>الزمن: <span id="projectile-time">0</span> ث</div>
+                </div>
+            </div>
+        </main>
+        
+        <footer class="text-center mt-12 text-white opacity-75">
+            <p>🌟 تعلم الفيزياء من خلال المشاهدة والتفاعل • اكتشف جمال القوانين الطبيعية</p>
+        </footer>
+    </div>
+
+    <script>
+        // Global variables for animations
+        let uniformAnimation, acceleratedAnimation, freefallAnimation, projectileAnimation;
+        let uniformRunning = false, acceleratedRunning = false, freefallRunning = false, projectileRunning = false;
+        
+        // Uniform Motion
+        let uniformTime = 0;
+        let uniformVelocity = 5;
+        let uniformStartPosition = 20;
+        
+        function updateUniformSpeed() {
+            uniformVelocity = parseInt(document.getElementById('uniform-speed-slider').value);
+            document.getElementById('uniform-speed-value').textContent = (uniformVelocity * 10) + ' كم/س';
+            document.getElementById('uniform-velocity').textContent = uniformVelocity * 10;
+            document.getElementById('uniform-speed').textContent = `السرعة: ${uniformVelocity * 10} كم/س`;
+        }
+        
+        function startUniformMotion() {
+            if (!uniformRunning) {
+                uniformRunning = true;
+                const car = document.getElementById('uniform-car');
+                car.classList.remove('paused');
+                uniformAnimation = setInterval(() => {
+                    uniformTime += 0.1;
+                    const distance = uniformVelocity * uniformTime;
+                    const scene = document.getElementById('uniform-scene');
+                    const maxDistance = scene.clientWidth - 80;
+                    const newPosition = uniformStartPosition + distance * 5;
+                    
+                    if (newPosition < maxDistance) {
+                        car.style.right = newPosition + 'px';
+                    } else {
+                        car.style.right = maxDistance + 'px';
+                        pauseUniformMotion();
+                    }
+                    
+                    document.getElementById('uniform-speed').textContent = `السرعة: ${(uniformVelocity * 10).toFixed(1)} كم/س`;
+                    document.getElementById('uniform-distance').textContent = distance.toFixed(1);
+                    document.getElementById('uniform-time').textContent = uniformTime.toFixed(1);
+                    document.getElementById('uniform-avg-speed').textContent = uniformTime > 0 ? (distance / uniformTime * 10).toFixed(1) : '0';
+                }, 100);
+            }
+        }
+        
+        function pauseUniformMotion() {
+            uniformRunning = false;
+            document.getElementById('uniform-car').classList.add('paused');
+            clearInterval(uniformAnimation);
+        }
+        
+        function resetUniformMotion() {
+            pauseUniformMotion();
+            uniformTime = 0;
+            document.getElementById('uniform-car').style.right = uniformStartPosition + 'px';
+            document.getElementById('uniform-distance').textContent = '0';
+            document.getElementById('uniform-time').textContent = '0';
+            document.getElementById('uniform-avg-speed').textContent = '0';
+            document.getElementById('uniform-speed').textContent = `السرعة: ${uniformVelocity * 10} كم/س`;
+            document.getElementById('uniform-car').classList.remove('paused'); // Ensure wheels are not spinning on reset
+        }
+        
+        // Accelerated Motion
+        let acceleratedTime = 0;
+        let acceleratedVelocity = 0;
+        let acceleratedDistance = 0;
+        let acceleration = 2;
+        let acceleratedStartPosition = 20;
+        
+        function updateAcceleration() {
+            acceleration = parseFloat(document.getElementById('acceleration-slider').value);
+            document.getElementById('acceleration-value').textContent = acceleration + ' م/ث²';
+            document.getElementById('accelerated-acceleration').textContent = acceleration;
+        }
+        
+        function startAcceleratedMotion() {
+            if (!acceleratedRunning) {
+                acceleratedRunning = true;
+                const car = document.getElementById('accelerated-car');
+                car.classList.remove('paused');
+                acceleratedAnimation = setInterval(() => {
+                    acceleratedTime += 0.1;
+                    acceleratedVelocity = acceleration * acceleratedTime;
+                    acceleratedDistance = 0.5 * acceleration * Math.pow(acceleratedTime, 2);
+                    const scene = document.getElementById('accelerated-scene');
+                    const maxDistance = scene.clientWidth - 80;
+                    const newPosition = acceleratedStartPosition + acceleratedDistance * 10;
+                    
+                    if (newPosition < maxDistance) {
+                        car.style.right = newPosition + 'px';
+                        document.getElementById('speed-lines').style.opacity = Math.min(1, acceleratedVelocity / 50);
+                    } else {
+                        car.style.right = maxDistance + 'px';
+                        pauseAcceleratedMotion();
+                    }
+
+                    document.getElementById('accelerated-velocity').textContent = (acceleratedVelocity * 3.6).toFixed(1); // m/s to km/h
+                    document.getElementById('accelerated-distance').textContent = acceleratedDistance.toFixed(1);
+                    document.getElementById('accelerated-time').textContent = acceleratedTime.toFixed(1);
+                    document.getElementById('accelerated-speed').textContent = `السرعة: ${(acceleratedVelocity * 3.6).toFixed(1)} كم/س`;
+                }, 100);
+            }
+        }
+        
+        function pauseAcceleratedMotion() {
+            acceleratedRunning = false;
+            document.getElementById('accelerated-car').classList.add('paused');
+            document.getElementById('speed-lines').style.opacity = 0;
+            clearInterval(acceleratedAnimation);
+        }
+        
+        function resetAcceleratedMotion() {
+            pauseAcceleratedMotion();
+            acceleratedTime = 0;
+            acceleratedVelocity = 0;
+            acceleratedDistance = 0;
+            document.getElementById('accelerated-car').style.right = acceleratedStartPosition + 'px';
+            document.getElementById('accelerated-velocity').textContent = '0';
+            document.getElementById('accelerated-distance').textContent = '0';
+            document.getElementById('accelerated-time').textContent = '0';
+            document.getElementById('accelerated-speed').textContent = `السرعة: 0 كم/س`;
+        }
+        
+        // Free Fall
+        let freefallTime = 0;
+        const g = 9.8; // acceleration due to gravity
+        const freefallInitialHeight = 20; // in meters
+        
+        function startFreeFall() {
+            if (!freefallRunning) {
+                freefallRunning = true;
+                const apple = document.getElementById('falling-apple');
+                const sceneHeight = document.getElementById('freefall-scene').clientHeight;
+                const groundHeight = 40;
+                const appleHeight = apple.clientHeight;
+                const maxPosition = sceneHeight - groundHeight - appleHeight;
+                
+                freefallAnimation = setInterval(() => {
+                    freefallTime += 0.1;
+                    const distance = 0.5 * g * Math.pow(freefallTime, 2);
+                    const currentHeight = freefallInitialHeight - distance;
+                    const velocity = g * freefallTime;
+                    
+                    const positionInPixels = (distance / freefallInitialHeight) * (sceneHeight - groundHeight - appleHeight);
+                    apple.style.top = (positionInPixels) + 'px';
+                    
+                    if (currentHeight <= 0) {
+                        apple.style.top = maxPosition + 'px';
+                        pauseFreeFall();
+                    }
+                    
+                    document.getElementById('freefall-velocity').textContent = velocity.toFixed(1);
+                    document.getElementById('freefall-distance').textContent = distance.toFixed(1);
+                    document.getElementById('freefall-time').textContent = freefallTime.toFixed(1);
+                    document.getElementById('freefall-speed').textContent = `السرعة: ${velocity.toFixed(1)} م/ث`;
+                }, 100);
+            }
+        }
+        
+        function pauseFreeFall() {
+            freefallRunning = false;
+            clearInterval(freefallAnimation);
+        }
+        
+        function resetFreeFall() {
+            pauseFreeFall();
+            freefallTime = 0;
+            document.getElementById('falling-apple').style.top = '20px';
+            document.getElementById('freefall-velocity').textContent = '0';
+            document.getElementById('freefall-distance').textContent = '0';
+            document.getElementById('freefall-time').textContent = '0';
+            document.getElementById('freefall-speed').textContent = `السرعة: 0 م/ث`;
+        }
+        
+        // Projectile Motion
+        let projectileTime = 0;
+        let initialVelocity = 20;
+        let angle = 45; // in degrees
+        let gravity = 9.8;
+        const scale = 5; // Pixels per meter
+        
+        function updateAngle() {
+            angle = parseInt(document.getElementById('angle-slider').value);
+            document.getElementById('angle-value').textContent = angle + '°';
+            document.getElementById('projectile-angle').textContent = angle + '°';
+            document.getElementById('cannon').style.transform = `rotate(${90 - angle}deg)`;
+        }
+
+        function updateInitialVelocity() {
+            initialVelocity = parseInt(document.getElementById('velocity-slider').value);
+            document.getElementById('velocity-value').textContent = initialVelocity + ' م/ث';
+            document.getElementById('projectile-initial-velocity').textContent = initialVelocity;
+        }
+
+        function launchProjectile() {
+            if (!projectileRunning) {
+                projectileRunning = true;
+                const ball = document.getElementById('projectile-ball');
+                const path = document.getElementById('projectile-path');
+                const scene = document.getElementById('projectile-scene');
+
+                // Initial position
+                const startRight = 70;
+                const startBottom = 50;
+
+                ball.style.display = 'block';
+                ball.style.right = startRight + 'px';
+                ball.style.bottom = startBottom + 'px';
+                path.setAttribute('d', `M${scene.clientWidth - startRight},${scene.clientHeight - startBottom}`);
+                path.style.display = 'none';
+
+                let x = 0;
+                let y = 0;
+                projectileTime = 0;
+
+                const angleRad = angle * Math.PI / 180;
+                const v_x = initialVelocity * Math.cos(angleRad);
+                const v_y = initialVelocity * Math.sin(angleRad);
+
+                let max_height = 0;
+                let pathString = `M${scene.clientWidth - startRight},${scene.clientHeight - startBottom}`;
+
+                projectileAnimation = setInterval(() => {
+                    projectileTime += 0.05;
+                    
+                    // x position
+                    x = v_x * projectileTime;
+                    // y position
+                    y = (v_y * projectileTime) - (0.5 * gravity * Math.pow(projectileTime, 2));
+
+                    // Update max height
+                    if (y > max_height) {
+                        max_height = y;
+                    }
+
+                    // Check if projectile has hit the ground
+                    if (y < 0) {
+                        y = 0;
+                        pauseProjectile();
+                        
+                        // Final stats update
+                        const range = (initialVelocity * initialVelocity * Math.sin(2 * angleRad)) / gravity;
+                        const finalHeight = (initialVelocity * initialVelocity * Math.pow(Math.sin(angleRad), 2)) / (2 * gravity);
+
+                        document.getElementById('projectile-range').textContent = range.toFixed(1);
+                        document.getElementById('projectile-max-height').textContent = finalHeight.toFixed(1);
+                        document.getElementById('projectile-time').textContent = projectileTime.toFixed(1);
+                        path.style.display = 'block';
+                        pathString += `L${scene.clientWidth - (startRight + x * scale)},${scene.clientHeight - (startBottom + y * scale)}`;
+                        path.setAttribute('d', pathString);
+                        return;
+                    }
+
+                    // Update ball position
+                    const newRight = startRight + x * scale;
+                    const newBottom = startBottom + y * scale;
+                    ball.style.right = newRight + 'px';
+                    ball.style.bottom = newBottom + 'px';
+
+                    // Update path
+                    pathString += `L${scene.clientWidth - newRight},${scene.clientHeight - newBottom}`;
+                    path.setAttribute('d', pathString);
+
+                    // Update stats
+                    document.getElementById('projectile-height').textContent = y.toFixed(1);
+                    document.getElementById('projectile-range').textContent = x.toFixed(1);
+                    document.getElementById('projectile-max-height').textContent = max_height.toFixed(1);
+                    document.getElementById('projectile-time').textContent = projectileTime.toFixed(1);
+                }, 50);
+            }
+        }
+
+        function pauseProjectile() {
+            projectileRunning = false;
+            clearInterval(projectileAnimation);
+        }
+
+        function resetProjectile() {
+            pauseProjectile();
+            projectileTime = 0;
+            document.getElementById('projectile-ball').style.right = '70px';
+            document.getElementById('projectile-ball').style.bottom = '50px';
+            document.getElementById('projectile-ball').style.display = 'none';
+            document.getElementById('projectile-path').setAttribute('d', '');
+            document.getElementById('projectile-path').style.display = 'none';
+            document.getElementById('projectile-height').textContent = '0';
+            document.getElementById('projectile-range').textContent = '0';
+            document.getElementById('projectile-max-height').textContent = '0';
+            document.getElementById('projectile-time').textContent = '0';
+        }
+
+        // Initial setup
+        window.onload = function() {
+            updateUniformSpeed();
+            updateAcceleration();
+            updateAngle();
+            updateInitialVelocity();
+            pauseUniformMotion();
+            pauseAcceleratedMotion();
+            pauseFreeFall();
+            resetProjectile();
+        }
+
+    </script>
+</body>
+</html>
