@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>10 قوانين فيزيائية محسّنة</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans Arabic', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            text-align: right;
+            direction: rtl;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: white;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 2rem;
+            margin-bottom: 3rem;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .animation-scene {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border-radius: 15px;
+            border: 2px solid #cbd5e1;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            height: 350px;
+            margin: 1rem 0;
+        }
+        
+        .control-panel {
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn:active {
+            transform: translateY(-1px);
+        }
+        
+        .divider {
+            height: 3px;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.5), transparent);
+            margin: 4rem 0;
+        }
+
+        .value-display {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        /* Enhanced styles for specific laws */
+        #energy-conservation .ball {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(circle, #ff6b6b, #ee5a24);
+            border-radius: 50%;
+            bottom: 0;
+            right: 50%;
+            transform: translateX(50%);
+            transition: all 0.1s ease-out;
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+            border: 3px solid #fff;
+        }
+
+        #heat-conduction .bar {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            height: 30px;
+            width: 80%;
+            background: linear-gradient(to left, #e74c3c, #f39c12, #3498db);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border: 2px solid #fff;
+        }
+
+        #radiation-law .object {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(45deg, #2c3e50, #34495e);
+            border-radius: 15px;
+            transition: all 0.5s ease;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            border: 3px solid #fff;
+        }
+
+        #boyle-law .piston-container {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 160px;
+            height: 280px;
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.3), rgba(155, 89, 182, 0.3));
+            border: 3px solid #3498db;
+            border-bottom: none;
+            border-radius: 10px 10px 0 0;
+        }
+
+        #boyle-law .piston {
+            position: absolute;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 180px;
+            height: 25px;
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            transition: all 0.5s ease;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        #relativity-law .spaceship {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100px;
+            height: 40px;
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+            border-radius: 20px 5px 5px 20px;
+            transition: all 0.05s linear;
+            box-shadow: 0 5px 15px rgba(155, 89, 182, 0.4);
+        }
+
+        #relativity-law .spaceship::after {
+            content: '';
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-left: 20px solid #9b59b6;
+            border-top: 15px solid transparent;
+            border-bottom: 15px solid transparent;
+        }
+
+        #lorentz-force .charge-particle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 15px;
+            height: 15px;
+            background: radial-gradient(circle, #e74c3c, #c0392b);
+            border-radius: 50%;
+            box-shadow: 0 0 20px #e74c3c;
+            border: 2px solid #fff;
+        }
+
+        #charge-conservation .container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+        }
+        
+        .charge-conservation-ball {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border: 3px solid #fff;
+        }
+
+        .charge-conservation-ball:hover {
+            transform: scale(1.1);
+        }
+
+        #volume-expansion .fluid-container {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 280px;
+            background: rgba(52, 152, 219, 0.1);
+            border: 3px solid #3498db;
+            border-bottom: none;
+            border-radius: 10px 10px 0 0;
+        }
+        
+        #volume-expansion .fluid {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            transition: all 0.5s ease;
+            border-radius: 0 0 7px 7px;
+        }
+
+        #kirchhoff-law .circuit-node {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, #2c3e50, #34495e);
+            border-radius: 50%;
+            z-index: 10;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border: 3px solid #fff;
+        }
+
+        #kirchhoff-law .current-arrow {
+            position: absolute;
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            border-radius: 50%;
+            z-index: 5;
+            animation: flow linear infinite;
+            box-shadow: 0 0 10px #e74c3c;
+        }
+
+        @keyframes flow {
+            0% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(0.5); }
+        }
+
+        #friction-law .box {
+            position: absolute;
+            bottom: 40px;
+            left: 30px;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+            border: 3px solid #2c3e50;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        #friction-law .surface {
+            position: absolute;
+            bottom: 35px;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(135deg, #34495e, #2c3e50);
+            border-radius: 2px;
+        }
+
+        .math-formula {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            border-left: 4px solid #667eea;
+        }
+
+        .info-box {
+            background: rgba(52, 152, 219, 0.1);
+            border: 1px solid rgba(52, 152, 219, 0.3);
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1rem 0;
+            color: #2980b9;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="text-5xl md:text-6xl font-bold mb-4 drop-shadow-lg">⚡ 10 قوانين فيزيائية محسّنة</h1>
+            <p class="text-xl md:text-2xl opacity-90">محاكاة تفاعلية متقدمة لأهم المفاهيم الفيزيائية</p>
+        </header>
+
+        <!-- قانون حفظ الطاقة الميكانيكية -->
+        <div class="card" id="energy-conservation-mechanical">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">🌟 قانون حفظ الطاقة الميكانيكية</h2>
+            <div class="math-formula">
+                <div class="text-center text-xl">$E_{الكلية} = E_{حركية} + E_{كامنة} = \frac{1}{2}mv^2 + mgh = \text{ثابت}$</div>
+            </div>
+            <div class="animation-scene">
+                <div id="fall-ball" class="ball" style="bottom: 280px;"></div>
+                <div class="absolute bottom-0 w-full h-2 bg-gray-600"></div>
+                <div class="absolute right-4 top-4 text-sm text-gray-600">الارتفاع: <span id="height-display">2.8</span> م</div>
+            </div>
+            <div class="control-panel">
+                <div class="flex flex-col md:flex-row items-center justify-between mb-4">
+                    <label class="font-semibold">الارتفاع الأولي: <span id="initial-height-val" class="value-display">250</span> سم</label>
+                    <input type="range" id="initial-height-slider" min="10" max="280" value="250" class="w-full mx-4" oninput="updateMechanicalEnergy()">
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                    <div class="value-display text-center">
+                        <div>الطاقة الكامنة</div>
+                        <div class="text-xl font-bold"><span id="potential-energy-val">24.5</span> جول</div>
+                    </div>
+                    <div class="value-display text-center">
+                        <div>الطاقة الحركية</div>
+                        <div class="text-xl font-bold"><span id="kinetic-energy-val">0.0</span> جول</div>
+                    </div>
+                    <div class="value-display text-center">
+                        <div>الطاقة الكلية</div>
+                        <div class="text-xl font-bold"><span id="total-energy-val">24.5</span> جول</div>
+                    </div>
+                </div>
+                <button class="btn mt-4 w-full" onclick="startFallSimulation()">▶️ بدء المحاكاة</button>
+            </div>
+            <div class="info-box">
+                💡 <strong>ملاحظة:</strong> تظهر هذه المحاكاة كيف تتحول الطاقة الكامنة إلى حركية أثناء السقوط، مع بقاء الطاقة الكلية ثابتة.
+            </div>
+        </div>
+        <div class="divider"></div>
+
+        <!-- قانون التوصيل الحراري (فورييه) -->
+        <div class="card" id="heat-conduction">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">🔥 قانون فورييه للتوصيل الحراري</h2>
+            <div class="math-formula">
+                <div class="text-center text-xl">$q = -k \cdot A \cdot \frac{dT}{dx}$</div>
+                <div class="text-center text-sm mt-2">حيث: q = معدل انتقال الحرارة، k = معامل التوصيل الحراري، A = المساحة</div>
+            </div>
+            <div class="animation-scene flex items-center justify-center">
+                <div id="conduction-bar" class="bar"></div>
+                <div class="absolute left-[10%] -translate-x-1/2 top-1/2 text-center">
+                    <div class="w-12 h-12 bg-red-500 rounded-full animate-pulse shadow-lg"></div>
+                    <p class="text-sm mt-2 font-bold text-red-600">100°C</p>
+                </div>
+                <div class="absolute right-[10%] translate-x-1/2 top-1/2 text-center">
+                    <div class="w-12 h-12 bg-blue-500 rounded-full shadow-lg"></div>
+                    <p class="text-sm mt-2 font-bold text-blue-600">20°C</p>
+                </div>
+                <div class="absolute top-4 left-4 text-sm">
+                    انتقال الحرارة: <span id="heat-flow-rate">متوسط</span>
+                </div>
+            </div>
+            <div class="control-panel">
+                <div class="flex flex-col md:flex-row items-center justify-between mb-4">
+                    <label class="font-semibold">معامل التوصيل: <span id="conductivity-val" class="value-display">0.5</span></label>
+                    <input type="range" id="conductivity-slider" min="0.1" max="1" step="0.1" value="0.5" class="w-full mx-4" oninput="updateConductivity()">
+                </div>
+                <button class="btn w-full" onclick="startConduction()">▶️ بدء انتقال الحرارة</button>
+            </div>
+            <div class="info-box">
+                💡 <strong>تطبيقات:</strong> هذا القانون يفسر كيفية انتقال الحرارة في المواد الصلبة مثل المعادن والسيراميك.
+            </div>
+        </div>
+        <div class="divider"></div>
+        
+        <!-- قانون الإشعاع الحراري لستيفان-بولتزمان -->
+        <div class="card" id="radiation-law">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">☀️ قانون ستيفان-بولتزمان للإشعاع</h2>
+            <div class="math-formula">
+                <div class="text-center text-xl">$P = \sigma \cdot A \cdot T^4$</div>
+                <div class="text-center text-sm mt-2">حيث: σ = 5.67×10⁻⁸ واط/(م²·ك⁴) ثابت ستيفان-بولتزمان</div>
+            </div>
+            <div class="animation-scene flex items-center justify-center">
+                <div id="radiation-object" class="object"></div>
+                <div class="absolute top-4 right-4">
+                    <div class="text-sm">الإشعاع المنبعث</div>
+                    <div id="radiation-waves" class="flex space-x-1"></div>
+                </div>
+            </div>
+            <div class="control-panel">
+                <div class="flex flex-col md:flex-row items-center justify-between mb-4">
+                    <label class="font-semibold">درجة الحرارة: <span id="temp-val-radiation" class="value-display">300</span> كلفن</label>
+                    <input type="range" id="temp-slider-radiation" min="100" max="1000" value="300" class="w-full mx-4" oninput="updateRadiation()">
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                    <div class="value-display text-center">
+                        <div>درجة الحرارة المئوية</div>
+                        <div class="text-xl font-bold"><span id="temp-celsius">27</span>°C</div>
+                    </div>
+                    <div class="value-display text-center">
+                        <div>القدرة المشعة</div>
+                        <div class="text-xl font-bold"><span id="power-val">4.59×10⁻⁶</span> واط/م²</div>
+                    </div>
+                </div>
+                <button class="btn w-full mt-4" onclick="animateRadiation()">🔄 محاكاة الإشعاع</button>
+            </div>
+            <div class="info-box">
+                💡 <strong>مثال:</strong> جسم الإنسان (37°C) يشع طاقة حرارية وفقاً لهذا القانون - لهذا نشعر بالدفء!
+            </div>
+        </div>
+        <div class="divider"></div>
+
+        <!-- قانون بويل-ماريوت -->
+        <div class="card" id="boyle-law">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">💨 قانون بويل للغازات المثالية</h2>
+            <div class="math-formula">
+                <div class="text-center text-xl">$P_1V_1 = P_2V_2$ (عند ثبوت درجة الحرارة)</div>
+                <div class="text-center text-sm mt-2">الضغط والحجم متناسبان عكسياً</div>
+            </div>
+            <div class="animation-scene">
+                <div id="piston-container" class="piston-container">
+                    <div id="gas-particles"></div>
+                </div>
+                <div id="piston" class="piston"></div>
+                <div class="absolute top-4 left-4 text-sm">
+                    عدد الجزيئات: <span id="particle-count">50</span>
+                </div>
+            </div>
+            <div class="control-panel">
+                <div class="flex flex-col md:flex-row items-center justify-between mb-4">
+                    <label class="font-semibold">الضغط: <span id="pressure-val-boyle" class="value-display">1.0</span> ضغط جوي</label>
+                    <input type="range" id="pressure-slider-boyle" min="0.5" max="5" step="0.1" value="1" class="w-full mx-4" oninput="updateBoyle()">
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                    <div class="value-display text-center">
+                        <div>الضغط (P)</div>
+                        <div class="text-xl font-bold"><span id="pressure-display">1.0</span> atm</div>
+                    </div>
+                    <div class="value-display text-center">
+                        <div>الحجم (V)</div>
+                        <div class="text-xl font-bold"><span id="volume-val-boyle">10.0</span> لتر</div>
+                    </div>
+                    <div class="value-display text-center">
+                        <div>الثابت (PV)</div>
+                        <div class="text-xl font-bold"><span id="pv-constant">10.0</span></div>
+                    </div>
+                </div>
+                <button class="btn w-full mt-4" onclick="animateGasParticles()">🔄 محاكاة حركة الجزيئات</button>
+            </div>
+            <div class="info-box">
+                💡 <strong>تطبيق:</strong> يفسر هذا القانون عمل المحاقن الطبية والمكابس الهيدروليكية.
+            </div>
+        </div>
+        <div class="divider"></div>
+
+        <!-- قانون أينشتاين للنسبية الخاصة -->
+        <div class="card" id="relativity-law">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">🚀 قانون تأخير الزمن النسبي</h2>
+            <div class="math-formula">
+                <div class="text-center text-xl">$\Delta t' = \frac{\Delta t}{\sqrt{1-\frac{v^2}{c^2}}}$</div>
+                <div class="text-center text-sm mt-2">حيث c = 299,792,458 م/ث (سرعة الضوء)</div>
+            </div>
+            <div class="animation-scene">
+                <div id="spaceship" class="spaceship"></div>
+                <div class="absolute bottom-4 left-4 text-sm">
+                    المسافة المقطوعة: <span id="distance-traveled">0</span> كم
+                </div>
+                <div class="absolute top-4 right-4 text-sm">
+                    الزمن النسبي: <span id="relative-time">1.00</span>
+                </div>
+            </div>
+            <div class="control-panel">
+                <div class="flex flex-col md:flex-row items-center justify-between mb-4">
+                    <label class="font-semibold">السرعة: <span id="speed-val-relativity" class="value-display">0.10</span>c</label>
+                    <input type="range" id="speed-slider-relativity" min="0" max="0.99" step="0.01" value="0.1" class="w-full mx-4" oninput="updateRelativity()">
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                    <div class="value-display text-center">
+                        <div>السرعة</div>
+                        <div class="text-xl font-bold"><span id="speed-kmh">29,979,246</span> كم/ساعة</div>
+                    </div>
+                    <div class="value-display text-center">
+                        <div>عامل لورنتز (γ)</div>
+                        <div class="text-xl font-bold"><span id="lorentz-factor">1.005</span></div>
+                    </div>
+                    <div class="value-display text-center">
+                        <div>تأخير الزمن</div>
+                        <div class="text-xl font-bold"><span id="time-dilation-val">1.005</span> ضعف</div>
+                    </div>
+                </div>
+                <button class="btn w-full mt-4" onclick="startRelativisticJourney()">🚀 رحلة نسبية</button>
+            </div>
+            <div class="info-box">
+                💡 <strong>مثال مذهل:</strong> لو سافرت بسرعة 90% من سرعة الضوء، فإن ساعة واحدة بالنسبة لك ستعادل 2.3 ساعة على الأرض!
+            </div>
+        </div>
+        <div class="divider"></div>
+
+        <!-- قانون لورنتز للقوة المغناطيسية -->
+        <div class="card" id="lorentz-force">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">🧲 قانون قوة لورنتز المغناطيسية</h2>
+            <div class="math-formula">
+                <div class="text-center text-xl">$\vec{F} = q(\vec{E} + \vec{v} \times \vec{B})$</div>
+                <div class="text-center text-sm mt-2">القوة على شحنة متحركة في مجال كهربائي ومغناطيسي</div>
+            </div>
+            <div class="animation-scene">
+                <div class="absolute top-4 left-4 text-sm font-semibold text-blue-600">
+                    ⬆️ مجال مغناطيسي (B) - خارج الصفحة
+                </div>
+                <div id="charge-particle" class="charge-particle"></div>
+                <div id="particle-trail"></div>
+                <div class="absolute bottom-4 right-4 text-xs">
+                    المسار الدائري للشحنة الموجبة
+                </div>
+            </div>
+            <div class="control-panel">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="font-semibold">شدة المجال المغناطيسي: <span id="magnetic-field-val" class="value-display">1.0</span> تسلا</label>
+                        <input type="range" id="magnetic-field-slider" min="0.1" max="2.0" step="0.1" value="1.0" class="w-full mx-4" oninput="updateLorentz()">
+                    </div>
+                    <div>
+                        <label class="font-semibold">سرعة الجسيم: <span id="particle-speed-val" class="value-display">5.0</span> م/ث</label>
+                        <input type="range" id="particle-speed-slider" min="1" max="10" step="0.5" value="5" class="w-full mx-4" oninput="updateLorentz()">
+                    </div>
+                </div>
+                <button class="btn w-full" onclick="startLorentzSimulation()">▶️ بدء المحاكاة</button>
+            </div>
+            <div class="info-box">
+                💡 <strong>مثال:</strong> تستخدم هذه القوة في مسرعات الجسيمات وأجهزة الطيف الكتلي.
+            </div>
+        </div>
+        <div class="divider"></div>
+
+        <!-- قانون حفظ الشحنة الكهربائية -->
+        <div class="card" id="charge-conservation">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">⚛️ قانون حفظ الشحنة الكهربائية</h2>
+            <div class="math-formula">
+                <div class="text-center text-xl">$\sum q_{\text{قبل}} = \sum q_{\text{بعد}}$</div>
+            </div>
+            <div class="animation-scene flex items-center justify-center">
+                <div id="charge-ball-1" class="charge-conservation-ball bg-red-500" data-charge="2" style="right: 20%;">+2</div>
+                <div id="charge-ball-2" class="charge-conservation-ball bg-blue-500" data-charge="-2" style="left: 20%;">—2</div>
+                <div id="combined-ball" class="charge-conservation-ball bg-purple-500 hidden">0</div>
+            </div>
+            <div class="control-panel">
+                <div class="text-center font-semibold mb-4">
+                    الشحنة الكلية: <span id="total-charge-val" class="value-display">0</span>
+                </div>
+                <p class="text-center text-sm text-gray-600 mb-4">اسحب إحدى الكرات إلى الأخرى لدمجها واكتشف أن الشحنة الكلية محفوظة.</p>
+                <button class="btn w-full" onclick="resetChargeConservation()">🔄 إعادة تعيين</button>
+            </div>
+            <div class="info-box">
+                💡 <strong>مفهوم أساسي:</strong> لا يمكن إنشاء أو إتلاف شحنة كهربائية؛ يمكن فقط نقلها من جسم لآخر.
+            </div>
+        </div>
+        <div class="divider"></div>
+
+        <!-- قانون التمدد الحراري الحجمي -->
+        <div class="card" id="volume-expansion">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">💧 قانون التمدد الحراري الحجمي</h2>
+            <div class="math-formula">
+                <div class="text-center text-xl">$\Delta V = \beta \cdot V_0 \cdot \Delta T$</div>
+                <div class="text-center text-sm mt-2">حيث: $\beta$ = معامل التمدد الحجمي، $V_0$ = الحجم الأولي</div>
+            </div>
+            <div class="animation-scene flex items-end justify-center">
+                <div id="fluid-container" class="fluid-container">
+                    <div id="fluid-level" class="fluid" style="height: 150px;"></div>
+                </div>
+                <div class="absolute bottom-[30px] w-[120px] text-center text-xs font-bold text-gray-800">
+                    <p>الحجم الأولي: <span id="initial-volume-val">150</span> سم³</p>
+                </div>
+            </div>
+            <div class="control-panel">
+                <div class="flex flex-col md:flex-row items-center justify-between mb-4">
+                    <label class="font-semibold">درجة الحرارة: <span id="temp-val-volumetric" class="value-display">20</span>°C</label>
+                    <input type="range" id="temp-slider-volumetric" min="0" max="100" value="20" class="w-full mx-4" oninput="updateVolumetricExpansion()">
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                    <div class="value-display text-center">
+                        <div>التغير في الحجم</div>
+                        <div class="text-xl font-bold"><span id="delta-volume-val">0.0</span> سم³</div>
+                    </div>
+                    <div class="value-display text-center">
+                        <div>الحجم النهائي</div>
+                        <div class="text-xl font-bold"><span id="volume-val-volumetric">150.0</span> سم³</div>
+                    </div>
+                </div>
+                <button class="btn w-full mt-4" onclick="animateVolumetricExpansion()">🔄 محاكاة التمدد</button>
+            </div>
+            <div class="info-box">
+                💡 <strong>مثال:</strong> يستخدم هذا المفهوم في مقياس الحرارة الزئبقي، حيث يتمدد الزئبق بارتفاع درجة الحرارة.
+            </div>
+        </div>
+        <div class="divider"></div>
+
+        <!-- قانون كيرشوف للتيار -->
+        <div class="card" id="kirchhoff-law">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">🔌 قانون كيرشوف الأول (التيار)</h2>
+            <div class="math-formula">
+                <div class="text-center text-xl">$\sum I_{in} = \sum I_{out}$</div>
+                <div class="text-center text-sm mt-2">مجموع التيارات الداخلة إلى العقدة يساوي مجموع التيارات الخارجة منها</div>
+            </div>
+            <div class="animation-scene">
+                <div id="node" class="circuit-node"></div>
+                <div id="in-current" class="absolute right-[55%] top-[45%] text-sm font-semibold text-gray-700">I₁ = <span id="i1-val">5</span> A</div>
+                <div id="out-current-1" class="absolute left-[55%] top-[45%] text-sm font-semibold text-gray-700">I₂ = <span id="i2-val">2</span> A</div>
+                <div id="out-current-2" class="absolute left-[55%] bottom-[45%] text-sm font-semibold text-gray-700">I₃ = <span id="i3-val">3</span> A</div>
+            </div>
+            <div class="control-panel">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="value-display text-center">
+                        <div>التيار الداخلي</div>
+                        <div class="text-xl font-bold"><span id="in-total">5</span> أمبير</div>
+                    </div>
+                    <div class="value-display text-center">
+                        <div>التيار الخارجي</div>
+                        <div class="text-xl font-bold"><span id="out-total">5</span> أمبير</div>
+                    </div>
+                </div>
+                <button class="btn w-full mt-4" onclick="startKirchhoffSimulation()">▶️ بدء المحاكاة</button>
+            </div>
+            <div class="info-box">
+                💡 <strong>مفهوم:</strong> هذا القانون هو تعبير عن مبدأ حفظ الشحنة في الدوائر الكهربائية.
+            </div>
+        </div>
+        <div class="divider"></div>
+
+        <!-- قانون الاحتكاك -->
+        <div class="card" id="friction-law">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">⚖️ قانون الاحتكاك الحركي</h2>
+            <div class="math-formula">
+                <div class="text-center text-xl">$F_f = \mu_k \cdot N$</div>
+                <div class="text-center text-sm mt-2">حيث: $\mu_k$ = معامل الاحتكاك الحركي، N = القوة العمودية</div>
+            </div>
+            <div class="animation-scene">
+                <div id="friction-box" class="box"></div>
+                <div class="surface"></div>
+                <div class="absolute bottom-[100px] w-[100px] text-center text-sm font-bold">
+                    <p class="text-red-500">القوة المطبقة</p>
+                    <p class="text-blue-500">قوة الاحتكاك</p>
+                </div>
+            </div>
+            <div class="control-panel">
+                <div class="flex flex-col md:flex-row items-center justify-between mb-4">
+                    <label class="font-semibold">القوة المطبقة: <span id="applied-force-val" class="value-display">50</span> نيوتن</label>
+                    <input type="range" id="applied-force-slider" min="10" max="100" value="50" class="w-full mx-4" oninput="updateFriction()">
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                    <div class="value-display text-center">
+                        <div>القوة الصافية</div>
+                        <div class="text-xl font-bold"><span id="net-force-val">...</span> نيوتن</div>
+                    </div>
+                    <div class="value-display text-center">
+                        <div>قوة الاحتكاك</div>
+                        <div class="text-xl font-bold"><span id="friction-force-val">...</span> نيوتن</div>
+                    </div>
+                    <div class="value-display text-center">
+                        <div>التسارع</div>
+                        <div class="text-xl font-bold"><span id="acceleration-val">...</span> م/ث²</div>
+                    </div>
+                </div>
+                <button class="btn w-full mt-4" onclick="startFrictionSimulation()">▶️ بدء الحركة</button>
+            </div>
+            <div class="info-box">
+                💡 <strong>مفهوم:</strong> كلما زادت القوة المطبقة على الجسم، كلما كان التسارع أكبر بعد التغلب على الاحتكاك.
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Set up MathJax
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
+
+        // Mechanical Energy Conservation
+        let ball = document.getElementById('fall-ball');
+        let initialHeightSlider = document.getElementById('initial-height-slider');
+        let potentialEnergyVal = document.getElementById('potential-energy-val');
+        let kineticEnergyVal = document.getElementById('kinetic-energy-val');
+        let totalEnergyVal = document.getElementById('total-energy-val');
+        let heightDisplay = document.getElementById('height-display');
+
+        const m = 1; // mass in kg
+        const g = 9.8; // gravity m/s^2
+        let animationFrameId;
+
+        function updateMechanicalEnergy() {
+            let initialHeightCm = parseFloat(initialHeightSlider.value);
+            let h_init = initialHeightCm / 100; // in meters
+
+            let PE_init = m * g * h_init;
+            let total_E = PE_init;
+
+            potentialEnergyVal.textContent = PE_init.toFixed(2);
+            kineticEnergyVal.textContent = "0.00";
+            totalEnergyVal.textContent = total_E.toFixed(2);
+            heightDisplay.textContent = h_init.toFixed(2);
+            ball.style.bottom = `${h_init * 100}px`;
+        }
+        
+        function startFallSimulation() {
+            cancelAnimationFrame(animationFrameId);
+            let initialHeightCm = parseFloat(initialHeightSlider.value);
+            let h_init = initialHeightCm / 100; // in meters
+            let time_start = null;
+
+            function animate(timestamp) {
+                if (!time_start) time_start = timestamp;
+                let elapsed_time = (timestamp - time_start) / 1000;
+                
+                let current_h = h_init - 0.5 * g * elapsed_time * elapsed_time;
+                if (current_h < 0) {
+                    current_h = 0;
+                    cancelAnimationFrame(animationFrameId);
+                }
+                
+                let current_v = g * elapsed_time;
+                if (current_h === 0) {
+                    current_v = Math.sqrt(2 * g * h_init);
+                }
+
+                let PE = m * g * current_h;
+                let KE = 0.5 * m * current_v * current_v;
+                let total_E = PE + KE;
+
+                potentialEnergyVal.textContent = PE.toFixed(2);
+                kineticEnergyVal.textContent = KE.toFixed(2);
+                totalEnergyVal.textContent = total_E.toFixed(2);
+                heightDisplay.textContent = current_h.toFixed(2);
+                ball.style.bottom = `${current_h * 100}px`;
+                
+                if (current_h > 0) {
+                    animationFrameId = requestAnimationFrame(animate);
+                }
+            }
+            animationFrameId = requestAnimationFrame(animate);
+        }
+
+        // Heat Conduction
+        function updateConductivity() {
+            let conductivitySlider = document.getElementById('conductivity-slider');
+            let conductivityVal = document.getElementById('conductivity-val');
+            conductivityVal.textContent = conductivitySlider.value;
+        }
+
+        function startConduction() {
+            let bar = document.getElementById('conduction-bar');
+            let heatFlowRate = document.getElementById('heat-flow-rate');
+            let k = parseFloat(document.getElementById('conductivity-slider').value);
+            let temp_diff = 80;
+            let rate = k * temp_diff;
+            if (rate < 10) {
+                heatFlowRate.textContent = 'منخفض';
+            } else if (rate < 50) {
+                heatFlowRate.textContent = 'متوسط';
+            } else {
+                heatFlowRate.textContent = 'مرتفع';
+            }
+
+            let initialColor = [231, 76, 60];
+            let finalColor = [52, 152, 219];
+            let steps = 100;
+            let currentStep = 0;
+
+            let intervalId = setInterval(() => {
+                let r = finalColor[0] + (initialColor[0] - finalColor[0]) * (currentStep / steps);
+                let g = finalColor[1] + (initialColor[1] - finalColor[1]) * (currentStep / steps);
+                let b = finalColor[2] + (initialColor[2] - finalColor[2]) * (currentStep / steps);
+                let currentColor = `rgb(${r}, ${g}, ${b})`;
+                bar.style.background = `linear-gradient(to right, ${currentColor}, #f39c12)`;
+                
+                currentStep++;
+                if (currentStep > steps) {
+                    clearInterval(intervalId);
+                }
+            }, 50);
+        }
+        
+        // Stefan-Boltzmann Law
+        let radiationInterval;
+        function updateRadiation() {
+            let tempSlider = document.getElementById('temp-slider-radiation');
+            let tempVal = document.getElementById('temp-val-radiation');
+            let tempCelsius = document.getElementById('temp-celsius');
+            let powerVal = document.getElementById('power-val');
+            let object = document.getElementById('radiation-object');
+
+            const sigma = 5.67e-8;
+            const A = 1;
+            let T = parseFloat(tempSlider.value);
+            
+            let power = sigma * A * Math.pow(T, 4);
+
+            tempVal.textContent = T;
+            tempCelsius.textContent = (T - 273.15).toFixed(0);
+            powerVal.textContent = power.toExponential(2);
+            
+            let colorFactor = (T - 100) / 900;
+            let r = Math.min(255, Math.floor(255 * colorFactor));
+            let g = Math.min(255, Math.floor(255 * colorFactor * 0.5));
+            let b = Math.min(255, Math.floor(255 * colorFactor * 0.1));
+            object.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+        }
+        function animateRadiation() {
+            clearInterval(radiationInterval);
+            let temp = parseFloat(document.getElementById('temp-slider-radiation').value);
+            let waveContainer = document.getElementById('radiation-waves');
+            waveContainer.innerHTML = '';
+            let waveCount = Math.floor((temp - 100) / 50);
+            if (waveCount < 1) return;
+
+            let wave = document.createElement('div');
+            wave.className = `w-${waveCount} h-${waveCount} rounded-full bg-yellow-500 animate-pulse`;
+            wave.style.width = `${waveCount * 2}px`;
+            wave.style.height = `${waveCount * 2}px`;
+            waveContainer.appendChild(wave);
+        }
+
+        // Boyle's Law
+        let particles = [];
+        let animationRunning = false;
+        
+        function createParticles() {
+            particles = [];
+            let particleContainer = document.getElementById('gas-particles');
+            particleContainer.innerHTML = '';
+            for (let i = 0; i < 50; i++) {
+                let particle = document.createElement('div');
+                particle.className = 'absolute w-2 h-2 rounded-full bg-blue-500';
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.bottom = `${Math.random() * 100}%`;
+                particle.style.transform = `translate(-50%, -50%)`;
+                particleContainer.appendChild(particle);
+                particles.push({
+                    element: particle,
+                    vx: (Math.random() - 0.5) * 5,
+                    vy: (Math.random() - 0.5) * 5
+                });
+            }
+        }
+        
+        function animateGasParticles() {
+            if (animationRunning) return;
+            animationRunning = true;
+            createParticles();
+            
+            function animate() {
+                let piston = document.getElementById('piston');
+                let pistonBottom = piston.getBoundingClientRect().top;
+                let container = document.getElementById('piston-container');
+                let containerRect = container.getBoundingClientRect();
+                
+                particles.forEach(p => {
+                    let rect = p.element.getBoundingClientRect();
+                    p.x = rect.left - containerRect.left;
+                    p.y = rect.top - containerRect.top;
+
+                    p.x += p.vx;
+                    p.y += p.vy;
+
+                    // Wall collision
+                    if (p.x <= 0 || p.x >= containerRect.width) p.vx *= -1;
+                    if (p.y <= 0 || rect.bottom >= pistonBottom) p.vy *= -1;
+                    
+                    p.element.style.left = `${p.x}px`;
+                    p.element.style.top = `${p.y}px`;
+                });
+
+                if (animationRunning) {
+                    requestAnimationFrame(animate);
+                }
+            }
+            animate();
+        }
+
+        function updateBoyle() {
+            let pressureSlider = document.getElementById('pressure-slider-boyle');
+            let pressureVal = document.getElementById('pressure-val-boyle');
+            let volumeVal = document.getElementById('volume-val-boyle');
+            let pvConstant = document.getElementById('pv-constant');
+            let pressureDisplay = document.getElementById('pressure-display');
+            let piston = document.getElementById('piston');
+
+            const P_initial = 1.0; // atm
+            const V_initial = 10.0; // liters
+            const containerHeight = 280; // px
+            const V_initial_px = 120;
+            const P_final = parseFloat(pressureSlider.value);
+
+            let V_final = (P_initial * V_initial) / P_final;
+            let V_final_px = (V_initial_px / V_initial) * V_final;
+            
+            piston.style.bottom = `${V_final_px + 20}px`;
+
+            pressureVal.textContent = P_final.toFixed(2);
+            pressureDisplay.textContent = P_final.toFixed(2);
+            volumeVal.textContent = V_final.toFixed(2);
+            pvConstant.textContent = (P_final * V_final).toFixed(2);
+        }
+
+        // Einstein's Relativity
+        let relativityAnimationId;
+        function updateRelativity() {
+            let speedSlider = document.getElementById('speed-slider-relativity');
+            let speedVal = document.getElementById('speed-val-relativity');
+            let lorentzFactor = document.getElementById('lorentz-factor');
+            let timeDilationVal = document.getElementById('time-dilation-val');
+            let speedKmh = document.getElementById('speed-kmh');
+
+            const c = 299792458; // m/s
+            let v_factor = parseFloat(speedSlider.value);
+            let v = v_factor * c;
+            
+            let gamma = 1 / Math.sqrt(1 - (v**2 / c**2));
+
+            speedVal.textContent = v_factor.toFixed(2);
+            lorentzFactor.textContent = gamma.toFixed(3);
+            timeDilationVal.textContent = gamma.toFixed(3);
+            speedKmh.textContent = (v * 3.6).toFixed(0).toLocaleString('en-US');
+
+            let spaceship = document.getElementById('spaceship');
+            spaceship.style.width = `${100 / gamma}px`;
+        }
+
+        let journeyInterval;
+        let distanceTraveled = 0;
+        let relativeTime = 0;
+
+        function startRelativisticJourney() {
+            clearInterval(journeyInterval);
+            let spaceship = document.getElementById('spaceship');
+            let speed = parseFloat(document.getElementById('speed-slider-relativity').value);
+            let gamma = 1 / Math.sqrt(1 - (speed**2));
+            
+            distanceTraveled = 0;
+            relativeTime = 0;
+            document.getElementById('distance-traveled').textContent = '0';
+            document.getElementById('relative-time').textContent = '1.00';
+            
+            let pos = 0;
+            journeyInterval = setInterval(() => {
+                pos += speed;
+                distanceTraveled += speed * 300000;
+                relativeTime = gamma;
+                
+                spaceship.style.left = `${pos * 50}px`;
+                document.getElementById('distance-traveled').textContent = (distanceTraveled / 1000).toFixed(0);
+                document.getElementById('relative-time').textContent = relativeTime.toFixed(2);
+            }, 100);
+        }
+        
+        // Lorentz Force
+        let lorentzAnimationId;
+        function updateLorentz() {
+            let magneticFieldSlider = document.getElementById('magnetic-field-slider');
+            let magneticFieldVal = document.getElementById('magnetic-field-val');
+            let particleSpeedSlider = document.getElementById('particle-speed-slider');
+            let particleSpeedVal = document.getElementById('particle-speed-val');
+
+            magneticFieldVal.textContent = magneticFieldSlider.value;
+            particleSpeedVal.textContent = particleSpeedSlider.value;
+        }
+
+        function startLorentzSimulation() {
+            cancelAnimationFrame(lorentzAnimationId);
+            let particle = document.getElementById('charge-particle');
+            let B = parseFloat(document.getElementById('magnetic-field-slider').value);
+            let v = parseFloat(document.getElementById('particle-speed-slider').value);
+            let q = 1; // assuming q = 1
+            let m = 1; // assuming m = 1
+            
+            let x = 150, y = 150;
+            let vx = v, vy = 0;
+
+            function animate() {
+                // F = q * (v x B) -> a = (q/m) * (v x B)
+                let Fx = 0;
+                let Fy = -q * vx * B;
+                
+                let ax = Fx / m;
+                let ay = Fy / m;
+
+                vx += ax;
+                vy += ay;
+                
+                x += vx * 0.1;
+                y += vy * 0.1;
+                
+                particle.style.left = `${x}px`;
+                particle.style.top = `${y}px`;
+                
+                lorentzAnimationId = requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        // Charge Conservation
+        let charge1 = document.getElementById('charge-ball-1');
+        let charge2 = document.getElementById('charge-ball-2');
+        let combinedBall = document.getElementById('combined-ball');
+        let totalChargeVal = document.getElementById('total-charge-val');
+
+        function setupDragAndDrop() {
+            charge1.ondragstart = (e) => { e.dataTransfer.setData("text/plain", "charge1"); };
+            charge2.ondragstart = (e) => { e.dataTransfer.setData("text/plain", "charge2"); };
+            
+            charge1.ondragover = charge2.ondragover = (e) => { e.preventDefault(); };
+            
+            charge1.ondrop = (e) => {
+                e.preventDefault();
+                let draggedId = e.dataTransfer.getData("text/plain");
+                if (draggedId === 'charge2') {
+                    combineCharges();
+                }
+            };
+            charge2.ondrop = (e) => {
+                e.preventDefault();
+                let draggedId = e.dataTransfer.getData("text/plain");
+                if (draggedId === 'charge1') {
+                    combineCharges();
+                }
+            };
+        }
+
+        function combineCharges() {
+            let q1 = parseInt(charge1.dataset.charge);
+            let q2 = parseInt(charge2.dataset.charge);
+            let finalCharge = q1 + q2;
+            
+            charge1.style.display = 'none';
+            charge2.style.display = 'none';
+            
+            combinedBall.style.display = 'flex';
+            combinedBall.textContent = finalCharge;
+            totalChargeVal.textContent = finalCharge;
+        }
+
+        function resetChargeConservation() {
+            charge1.style.display = 'flex';
+            charge2.style.display = 'flex';
+            combinedBall.style.display = 'none';
+            totalChargeVal.textContent = parseInt(charge1.dataset.charge) + parseInt(charge2.dataset.charge);
+        }
+
+        // Volumetric Thermal Expansion
+        function updateVolumetricExpansion() {
+            let tempSlider = document.getElementById('temp-slider-volumetric');
+            let tempVal = document.getElementById('temp-val-volumetric');
+            let deltaVolumeVal = document.getElementById('delta-volume-val');
+            let volumeVal = document.getElementById('volume-val-volumetric');
+            let fluidLevel = document.getElementById('fluid-level');
+
+            const V0 = 150; // cm^3
+            const beta = 2.1e-4; // 1/C
+            let T = parseFloat(tempSlider.value);
+            
+            let dV = beta * V0 * T;
+            let V_final = V0 + dV;
+
+            tempVal.textContent = T;
+            deltaVolumeVal.textContent = dV.toFixed(2);
+            volumeVal.textContent = V_final.toFixed(2);
+            fluidLevel.style.height = `${(V_final / 150) * 150}px`;
+        }
+        
+        // Kirchhoff's Law
+        let kirchhoffInterval;
+        function startKirchhoffSimulation() {
+            clearInterval(kirchhoffInterval);
+            let node = document.getElementById('node');
+            let inTotal = document.getElementById('in-total');
+            let outTotal = document.getElementById('out-total');
+
+            const i1 = parseFloat(document.getElementById('i1-val').textContent);
+            const i2 = parseFloat(document.getElementById('i2-val').textContent);
+            const i3 = parseFloat(document.getElementById('i3-val').textContent);
+            
+            let incoming = i1;
+            let outgoing = i2 + i3;
+            
+            inTotal.textContent = incoming;
+            outTotal.textContent = outgoing;
+
+            function createArrow(angle, duration) {
+                let arrow = document.createElement('div');
+                arrow.className = 'current-arrow';
+                arrow.style.transform = `rotate(${angle}deg)`;
+                arrow.style.animationDuration = `${duration}s`;
+                node.parentNode.appendChild(arrow);
+                setTimeout(() => arrow.remove(), duration * 1000);
+            }
+            
+            kirchhoffInterval = setInterval(() => {
+                createArrow(-90, 1.5); // I1
+                createArrow(90, 2); // I2
+                createArrow(0, 3); // I3
+            }, 1000);
+        }
+
+        // Friction Law
+        let frictionAnimationId;
+        function updateFriction() {
+            let appliedForceSlider = document.getElementById('applied-force-slider');
+            let appliedForceVal = document.getElementById('applied-force-val');
+            let netForceVal = document.getElementById('net-force-val');
+            let frictionForceVal = document.getElementById('friction-force-val');
+            let accelerationVal = document.getElementById('acceleration-val');
+
+            const mu_k = 0.5;
+            const N = 100;
+            let F_applied = parseFloat(appliedForceSlider.value);
+            let F_friction = mu_k * N;
+
+            let F_net = F_applied - F_friction;
+            let a = F_net > 0 ? F_net / 10 : 0;
+
+            appliedForceVal.textContent = F_applied;
+            frictionForceVal.textContent = F_friction.toFixed(2);
+            netForceVal.textContent = F_net.toFixed(2);
+            accelerationVal.textContent = a.toFixed(2);
+        }
+
+        function startFrictionSimulation() {
+            cancelAnimationFrame(frictionAnimationId);
+            let box = document.getElementById('friction-box');
+            let F_applied = parseFloat(document.getElementById('applied-force-slider').value);
+            const mu_k = 0.5;
+            const N = 100;
+            let F_friction = mu_k * N;
+            let F_net = F_applied - F_friction;
+            
+            if (F_net <= 0) return;
+            
+            let a = F_net / 10;
+            let position = 30;
+
+            function animate() {
+                position += a;
+                box.style.left = `${position}px`;
+                if (position < 600) {
+                    frictionAnimationId = requestAnimationFrame(animate);
+                }
+            }
+            animate();
+        }
+
+        // Initialize all animations on page load
+        window.onload = function() {
+            updateMechanicalEnergy();
+            updateConductivity();
+            updateRadiation();
+            updateBoyle();
+            updateRelativity();
+            setupDragAndDrop();
+            updateVolumetricExpansion();
+            updateFriction();
+            updateLorentz();
+        };
+    </script>
+</body>
+</html>
